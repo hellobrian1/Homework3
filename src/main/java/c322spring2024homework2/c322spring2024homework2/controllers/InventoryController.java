@@ -42,29 +42,30 @@ public class InventoryController{
 
     @GetMapping("/find")
     public Guitar getGuitar(@RequestParam String serialNumber) {
-        try {
-            FileReader r = new FileReader("guitars_database.txt");
-            BufferedReader bufferedReader = new BufferedReader(r);
+        try (FileReader r = new FileReader("guitars_database.txt");
+             BufferedReader bufferedReader = new BufferedReader(r)) {
 
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] guitarData = line.split(",");
-                if (guitarData[0].equals(serialNumber)) {
-//                    return new Guitar(guitarData[0], Double.parseDouble(guitarData[1]), guitarData[2],
-//                            guitarData[3], guitarData[4], guitarData[5], guitarData[6]);
-                    Guitar guitar;
-                    guitar = new Guitar(guitarData[0], Double.parseDouble(guitarData[1]), Builder.valueOf(guitarData[2]),
-                            guitarData[3], Type.valueOf(guitarData[4]), Wood.valueOf(guitarData[5]), Wood.valueOf(guitarData[6]));
-                    return guitar;
+                if (guitarData.length == 7 && guitarData[0].equals(serialNumber)) {
+                    try {
+                        Guitar guitar = new Guitar(guitarData[0], Double.parseDouble(guitarData[1]),
+                                Builder.valueOf(guitarData[2].toUpperCase().replace(" ", "_")),
+                                guitarData[3], Type.valueOf(guitarData[4].toUpperCase().replace(" ", "_")),
+                                Wood.valueOf(guitarData[5].toUpperCase().replace(" ", "_")),
+                                Wood.valueOf(guitarData[6].toUpperCase().replace(" ", "_")));
+                        return guitar;
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Error parsing data: " + e.getMessage());
+                    }
                 }
             }
-            bufferedReader.close();
-            r.close();
-            return null;
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
-            return null;
         }
+
+        return null;
     }
 
 }

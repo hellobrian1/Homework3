@@ -94,42 +94,74 @@ public class InventoryRepository {
 
 
 
+//    public Guitar search(Guitar guitarToFind) {
+//        try {
+//            FileReader r = new FileReader("guitars_database.txt");
+//            BufferedReader bufferedReader = new BufferedReader(r);
+//
+//            String line;
+//            while ((line = bufferedReader.readLine()) != null) {
+//                String[] guitarData = line.split(",");
+//                if (guitarData.length != 7) {
+//                    System.out.println("No guitar found");
+//                    continue;
+//                }
+//
+//                Guitar g = new Guitar(guitarData[0], Double.parseDouble(guitarData[1]), Builder.valueOf(guitarData[2]),
+//                        guitarData[3], Type.valueOf(guitarData[4]), Wood.valueOf(guitarData[5]), Wood.valueOf(guitarData[6]));
+//
+//                if (g.getSerialNumber().equals(guitarToFind.getSerialNumber()) &&
+//                        g.getBuilder().equals(guitarToFind.getBuilder()) &&
+//                        g.getModel().equals(guitarToFind.getModel()) &&
+//                        g.getType().equals(guitarToFind.getType()) &&
+//                        g.getBackWood().equals(guitarToFind.getBackWood()) &&
+//                        g.getTopWood().equals(guitarToFind.getTopWood())) {
+//                    return g;
+//                }
+//            }
+//
+//            bufferedReader.close();
+//            r.close();
+//
+//            System.out.println("No guitar found");
+//            return null;
+//        } catch (IOException e) {
+//            System.err.println("Error reading file: " + e.getMessage());
+//            return null;
+//        }
+//    }
+
+
     public Guitar search(Guitar guitarToFind) {
-        try {
-            FileReader r = new FileReader("guitars_database.txt");
-            BufferedReader bufferedReader = new BufferedReader(r);
+        try (FileReader r = new FileReader("guitars_database.txt");
+             BufferedReader bufferedReader = new BufferedReader(r)) {
 
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] guitarData = line.split(",");
-                if (guitarData.length != 7) {
-                    System.out.println("No guitar found");
-                    continue;
-                }
+//                if (guitarData.length != 7) {
+//                    continue;
+//                }
 
-                Guitar g = new Guitar(guitarData[0], Double.parseDouble(guitarData[1]), Builder.valueOf(guitarData[2]),
-                        guitarData[3], Type.valueOf(guitarData[4]), Wood.valueOf(guitarData[5]), Wood.valueOf(guitarData[6]));
+                Guitar g = new Guitar(guitarData[0], Double.parseDouble(guitarData[1]),
+                        Builder.valueOf(guitarData[2].toUpperCase().replace(" ", "_")),
+                        guitarData[3], Type.valueOf(guitarData[4].toUpperCase().replace(" ", "_")),
+                        Wood.valueOf(guitarData[5].toUpperCase().replace(" ", "_")),
+                        Wood.valueOf(guitarData[6].toUpperCase().replace(" ", "_")));
 
-                if (g.getSerialNumber().equals(guitarToFind.getSerialNumber()) &&
-                        g.getBuilder().equals(guitarToFind.getBuilder()) &&
-                        g.getModel().equals(guitarToFind.getModel()) &&
-                        g.getType().equals(guitarToFind.getType()) &&
-                        g.getBackWood().equals(guitarToFind.getBackWood()) &&
-                        g.getTopWood().equals(guitarToFind.getTopWood())) {
+                if (g.equals(guitarToFind)) {
                     return g;
                 }
             }
-
-            bufferedReader.close();
-            r.close();
-
-            System.out.println("No guitar found");
-            return null;
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
-            return null;
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error parsing data: " + e.getMessage());
         }
+
+        return null;
     }
+
 //public Guitar search(String serialNumber) {
 //    try (FileReader r = new FileReader("guitars_database.txt");
 //         BufferedReader bufferedReader = new BufferedReader(r)) {

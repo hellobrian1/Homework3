@@ -6,25 +6,14 @@ import c322spring2024homework2.c322spring2024homework2.model.Guitar;
 import c322spring2024homework2.c322spring2024homework2.model.Type;
 import c322spring2024homework2.c322spring2024homework2.model.Wood;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryRepositoryTest{
-//    @Test
-//    void addGuitar() {
-//        InventoryRepository i = new InventoryRepository();
-////        Guitar g2 = new Guitar("100", 800.0, Builder.FENDER, "King", Type.ELECTRIC, Wood.INDIAN_ROSEWOOD, Wood.SITKA);
-//
-//        Guitar g1 = new Guitar("007", 500.0, Builder.FENDER, "Dreadnought", Type.ACOUSTIC, Wood.BRAZILIAN_ROSEWOOD, Wood.ADIRONDACK);
-////        i.addGuitar(g1.getSerialNumber(), g1.getPrice(), g1.getBuilder(), g1.getModel(), g1.getType(), g1.getBackWood(), g1.getTopWood());
-////
-////        assertTrue(i.getGuitar(g1.getSerialNumber()) != null);
-////
-////        //Guitar g2 = new Guitar("100", 800.0, Builder.FENDER, "King", Type.ELECTRIC, Wood.INDIAN_ROSEWOOD, Wood.SITKA);
-////        i.addGuitar(g2.getSerialNumber(), g2.getPrice(), g2.getBuilder(), g2.getModel(), g2.getType(), g2.getBackWood(), g2.getTopWood());
-////        assertTrue(i.getGuitar(g2.getSerialNumber()) != null);
-//        i.addGuitar(g1.getSerialNumber(), g1.getPrice(), g1.getBuilder(), g1.getModel(), g1.getType(), g1.getBackWood(), g1.getTopWood());
-//    }
-@Test
+
+        @Test
 void addGuitar() {
     // Create an InventoryRepository
     InventoryRepository i = new InventoryRepository();
@@ -53,24 +42,7 @@ void addGuitar() {
 
 
 
-//    @Test
-//    void getGuitar() {
-//        InventoryRepository i = new InventoryRepository();
-//        Guitar expectedGuitar = new Guitar("024", 100.0, Builder.FENDER, "Aero", Type.ACOUSTIC, Wood.BRAZILIAN_ROSEWOOD, Wood.ADIRONDACK);
-//        Guitar retrievedGuitar = i.getGuitar(expectedGuitar.getSerialNumber());
-//        //assertNotNull(retrievedGuitar);
-//
-//        assertEquals(expectedGuitar.getSerialNumber(), retrievedGuitar.getSerialNumber());
-//        assertEquals(expectedGuitar.getPrice(), retrievedGuitar.getPrice(), 0.0);
-//        assertEquals(expectedGuitar.getBuilder(), retrievedGuitar.getBuilder());
-//        assertEquals(expectedGuitar.getModel(), retrievedGuitar.getModel());
-//        assertEquals(expectedGuitar.getType(), retrievedGuitar.getType());
-//        assertEquals(expectedGuitar.getBackWood(), retrievedGuitar.getBackWood());
-//        assertEquals(expectedGuitar.getTopWood(), retrievedGuitar.getTopWood());
-//
-//        assertNull(i.getGuitar("123"));
-//
-//    }
+
 
     @Test
     void getGuitar() {
@@ -81,10 +53,12 @@ void addGuitar() {
         Guitar g1 = new Guitar("007", 500.0, Builder.FENDER, "Dreadnought", Type.ACOUSTIC, Wood.BRAZILIAN_ROSEWOOD, Wood.ADIRONDACK);
 
         // Add the guitar to the inventory
+
         i.addGuitar(g1.getSerialNumber(), g1.getPrice(), g1.getBuilder(), g1.getModel(), g1.getType(), g1.getBackWood(), g1.getTopWood());
 
         // Retrieve the added guitar from the inventory using getGuitar
         Guitar retrievedGuitar = i.getGuitar(g1.getSerialNumber());
+        System.out.println(g1);
 
         // Assert that the retrieved guitar is not null
         assertNotNull(retrievedGuitar);
@@ -99,51 +73,35 @@ void addGuitar() {
         assertEquals(g1.getTopWood(), retrievedGuitar.getTopWood());
     }
 
+    @Test
+    public void testSearch() {
+        // Create a sample guitar to find
+        Guitar guitarToFind = new Guitar("007", 500.0, Builder.FENDER, "Dreadnought", Type.ACOUSTIC, Wood.BRAZILIAN_ROSEWOOD, Wood.ADIRONDACK);
 
-//    @Test
-//    void search() {
-//
-//        InventoryRepository i = new InventoryRepository();
-//
-//        Guitar g = new Guitar("007", 500.0,  Builder.FENDER, "Dreadnought", Type.ACOUSTIC, Wood.BRAZILIAN_ROSEWOOD, Wood.ADIRONDACK);
-//            Guitar retrievedGuitar = i.search(g);
-//        assertNotNull(retrievedGuitar);
-//
-//        assertEquals(g.getSerialNumber(), retrievedGuitar.getSerialNumber());
-//        assertEquals(g.getPrice(), retrievedGuitar.getPrice(), 0.0);
-//        assertEquals(g.getBuilder(), retrievedGuitar.getBuilder());
-//        assertEquals(g.getModel(), retrievedGuitar.getModel());
-//        assertEquals(g.getType(), retrievedGuitar.getType());
-//        assertEquals(g.getBackWood(), retrievedGuitar.getBackWood());
-//        assertEquals(g.getTopWood(), retrievedGuitar.getTopWood());
-//    }
+        // Create an instance of the class containing the search method
+        InventoryRepository guitarSearch = new InventoryRepository();
 
-//    @Test
-//    void searchBySerialNumber() {
-//        // Create an InventoryRepository
-//        InventoryRepository i = new InventoryRepository();
-//
-//        // Create a Guitar object
-//        Guitar g1 = new Guitar("007", 500.0, Builder.FENDER, "Dreadnought", Type.ACOUSTIC, Wood.BRAZILIAN_ROSEWOOD, Wood.ADIRONDACK);
-//
-//        // Add the guitar to the inventory
-//        i.addGuitar(g1.getSerialNumber(), g1.getPrice(), g1.getBuilder(), g1.getModel(), g1.getType(), g1.getBackWood(), g1.getTopWood());
-//
-//        // Search for the guitar by serial number
-//        Guitar foundGuitar = i.search(g1.getSerialNumber());
-//
-//        // Assert that the found guitar is not null
-//        assertNotNull(foundGuitar);
-//
-//        // Check that the properties of the found guitar match the original guitar
-//        assertEquals(g1.getSerialNumber(), foundGuitar.getSerialNumber());
-//        assertEquals(g1.getPrice(), foundGuitar.getPrice(), 0.001); // You might need to adjust the delta value for double comparisons
-//        assertEquals(g1.getBuilder(), foundGuitar.getBuilder());
-//        assertEquals(g1.getModel(), foundGuitar.getModel());
-//        assertEquals(g1.getType(), foundGuitar.getType());
-//        assertEquals(g1.getBackWood(), foundGuitar.getBackWood());
-//        assertEquals(g1.getTopWood(), foundGuitar.getTopWood());
-//    }
+        // Call the search method and get the result
+        Guitar foundGuitar = guitarSearch.search(guitarToFind);
+
+        // Assert that the found guitar is not null
+
+        assertNotNull(foundGuitar);
+
+        // Assert that the found guitar matches the guitar we were looking for
+        assertEquals(guitarToFind, foundGuitar);
+
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 }

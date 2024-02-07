@@ -53,4 +53,18 @@ public class Guitar {
     public Wood getTopWood(){
         return topWood;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Guitar guitar = (Guitar) obj;
+        return Double.compare(guitar.price, price) == 0 &&
+                serialNum.equals(guitar.serialNum) &&
+                builder == guitar.builder &&
+                model.equals(guitar.model) &&
+                type == guitar.type &&
+                backWood == guitar.backWood &&
+                topWood == guitar.topWood;
+    }
 }
